@@ -1,11 +1,11 @@
 import { FormStyled } from './Form.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { addNumber } from '../../redux/contactsSlice';
-import { getContacts } from '../../redux/selector';
+import { addContact } from '../../redux/operations';
+import { selectContacts } from '../../redux/selector';
 
 export const Form = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(selectContacts);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -14,10 +14,14 @@ export const Form = () => {
     const name = form.elements.name.value;
     const number = form.elements.number.value;
 
-    if (contacts) {
-      const contactExists = contacts.some(contact => contact.name === name);
+    if (contacts.items) {
+      const contactExists = contacts.items.some(
+        contact => contact.name === name
+      );
       if (!contactExists) {
-        dispatch(addNumber({ name, number }));
+        console.log({ name, number });
+
+        dispatch(addContact({ name, number }));
       } else {
         alert(`Контакт с именем ${name} уже существует!`);
       }
